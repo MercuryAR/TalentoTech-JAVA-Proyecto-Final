@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 // Indica que esta clase es una entidad JPA
 @Entity
-@Table(name = "articulo") // Mapea a la tabla "articulo"
+@Table(name = "productos") // Mapea a la tabla "productos"
 public class Articulo {
 
     @Id // Clave primaria

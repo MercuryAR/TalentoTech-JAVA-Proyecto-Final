@@ -1,0 +1,6 @@
+com/ejemplo/articulos/service/ArticuloServiceImpl.class
+com/ejemplo/articulos/ArticuloApiApplication.class
+com/ejemplo/articulos/repository/ArticuloRepository.class
+com/ejemplo/articulos/controller/ArticuloController.class
+com/ejemplo/articulos/model/Articulo.class
+com/ejemplo/articulos/service/ArticuloService.class
