@@ -1,131 +1,245 @@
 // URL base de la API
-const API_URL = "http://localhost:8080/api/articulos";
+const API_URL = "http://localhost:8080/api/productos";
 
-// Cuando se carga la página, mostramos el listado
-document.addEventListener("DOMContentLoaded", listarArticulos);
-
-// Manejador del formulario
-document.getElementById("form-articulo").addEventListener("submit", guardarArticulo);
-
-// Botón para cancelar edición
-document.getElementById("cancelar").addEventListener("click", () => {
-    // Limpiar todos los campos del formulario
-    document.getElementById("form-articulo").reset();
-    // Borrar el ID oculto del formulario
-    document.getElementById("idArticulo").value = "";
+// Cuando se carga la página
+document.addEventListener("DOMContentLoaded", () => {
+    listarProductos();
+    
+    // Evento para cambiar campos según tipo
+    document.getElementById("tipo").addEventListener("change", mostrarCamposEspecificos);
+    
+    // Evento del formulario
+    document.getElementById("form-producto").addEventListener("submit", guardarProducto);
+    
+    // Botón cancelar
+    document.getElementById("cancelar").addEventListener("click", limpiarFormulario);
 });
 
-// === Listar todos los artículos ===
-function listarArticulos() {
-    // Llamada GET a la API para obtener todos los artículos
-    fetch(API_URL)
-        .then(response => response.json()) // Convertimos la respuesta a JSON
-        .then(data => {
-            const tbody = document.getElementById("tabla-articulos"); // Obtenemos el cuerpo de la tabla
-            tbody.innerHTML = ""; // Limpiar tabla antes de insertar nuevos datos
-            data.forEach(articulo => {
-                const fila = document.createElement("tr"); // Creamos una fila de tabla
-                // Conversión segura de precio
-                const precioNum = Number(articulo.precio);
-                const precioStr = isNaN(precioNum) ? "-" : `$${precioNum.toFixed(2)}`;
-                // Insertamos columnas con los datos del artículo y botones de acción
-                fila.innerHTML = `
-                    <td>${articulo.id ?? '-'}</td>
-                    <td>${articulo.nombre ?? '-'}</td>
-                    <td>${articulo.marca ?? 'N/A'}</td>
-                    <td>${articulo.talle ?? 'N/A'}</td>
-                    <td>${precioStr}</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="editarArticulo(${articulo.id})">Editar</button>
-                        <button class="btn btn-danger btn-sm" onclick="eliminarArticulo(${articulo.id})">Eliminar</button>
-                    </td>
-                `;
-                tbody.appendChild(fila); // Agregamos la fila al cuerpo de la tabla
-            });
-        })
-        .catch(error => console.error("Error al listar artículos:", error)); // Manejo de errores
+// POLIMORFISMO: Mostrar campos específicos según el tipo seleccionado
+function mostrarCamposEspecificos() {
+    const tipo = document.getElementById("tipo").value;
+    const container = document.getElementById("campos-especificos");
+    container.innerHTML = "";
+    
+    if (tipo === "REMERA") {
+        container.innerHTML = `
+            <div class="mb-3">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" required>
+            </div>
+            <div class="mb-3">
+                <label for="talle" class="form-label">Talle</label>
+                <input type="number" class="form-control" id="talle" required>
+            </div>
+            <div class="mb-3">
+                <label for="material" class="form-label">Material</label>
+                <input type="text" class="form-control" id="material" placeholder="Ej: Algodón, Poliéster">
+            </div>
+        `;
+    } else if (tipo === "ZAPATILLA") {
+        container.innerHTML = `
+            <div class="mb-3">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" required>
+            </div>
+            <div class="mb-3">
+                <label for="numeroCalzado" class="form-label">Número de Calzado</label>
+                <input type="number" class="form-control" id="numeroCalzado" required>
+            </div>
+            <div class="mb-3">
+                <label for="tipoDeporte" class="form-label">Tipo de Deporte</label>
+                <input type="text" class="form-control" id="tipoDeporte" placeholder="Ej: Running, Fútbol, Basket">
+            </div>
+        `;
+    } else if (tipo === "PELOTA") {
+        container.innerHTML = `
+            <div class="mb-3">
+                <label for="deporte" class="form-label">Deporte</label>
+                <input type="text" class="form-control" id="deporte" required placeholder="Ej: Fútbol, Básquet, Rugby">
+            </div>
+            <div class="mb-3">
+                <label for="tamanio" class="form-label">Tamaño</label>
+                <input type="text" class="form-control" id="tamanio" required placeholder="Ej: 3, 4, 5">
+            </div>
+        `;
+    }
 }
 
-// === Guardar o actualizar un artículo ===
-function guardarArticulo(event) {
-    event.preventDefault(); // Evitamos el comportamiento por defecto del formulario
+// Listar todos los productos (POLIMORFISMO en acción)
+function listarProductos() {
+    console.log("Cargando productos desde:", API_URL);
+    fetch(API_URL)
+        .then(response => {
+            console.log("Respuesta recibida:", response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Datos recibidos:", data);
+            const tbody = document.getElementById("tabla-productos");
+            tbody.innerHTML = "";
+            
+            if (!data || data.length === 0) {
+                console.warn("No hay productos en la base de datos");
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">No hay productos</td></tr>';
+                return;
+            }
+            
+            data.forEach(producto => {
+                const descuento = ((producto.precio - producto.precioFinal) / producto.precio * 100).toFixed(0);
+                const tipo = producto.tipo || "Desconocido";
+                const badgeClass = tipo === "Remera" ? "bg-primary" : 
+                                   tipo === "Zapatilla" ? "bg-success" : "bg-warning";
+                
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${producto.id}</td>
+                    <td><span class="badge ${badgeClass}">${tipo}</span></td>
+                    <td>${producto.nombre}</td>
+                    <td><small class="text-muted">${producto.detalle || ''}</small></td>
+                    <td>$${producto.precio.toFixed(2)}</td>
+                    <td class="fw-bold text-success">$${producto.precioFinal.toFixed(2)}</td>
+                    <td><span class="badge bg-danger">${descuento}%</span></td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editarProducto(${producto.id})">
+                            Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${producto.id})">
+                            Eliminar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+            console.log(`${data.length} productos cargados correctamente`);
+        })
+        .catch(error => {
+            console.error("Error al listar productos:", error);
+            alert("Error al cargar los productos: " + error.message);
+        });
+}
 
-    // Obtenemos los valores de los campos del formulario
-    const id = document.getElementById("idArticulo").value;
-    const nombre = document.getElementById("nombre").value.trim();
-    const marca = document.getElementById("marca").value.trim();
-    const talle = parseInt(document.getElementById("talle").value);
+// Guardar producto (POLIMORFISMO: construye objeto según tipo)
+function guardarProducto(event) {
+    event.preventDefault();
+    
+    const id = document.getElementById("idProducto").value;
+    const tipo = document.getElementById("tipo").value;
+    const nombre = document.getElementById("nombre").value;
     const precio = parseFloat(document.getElementById("precio").value);
-
-    // Validación de campos
-    if (!nombre || !marca || isNaN(talle) || isNaN(precio) || precio < 0) {
-        alert("Por favor complete correctamente todos los campos.");
-        return;
+    
+    // Construir objeto según el tipo (POLIMORFISMO)
+    let producto = {
+        tipo: tipo,  // Campo correcto para el backend
+        nombre: nombre,
+        precio: precio
+    };
+    
+    if (tipo === "REMERA") {
+        producto.marca = document.getElementById("marca").value;
+        producto.talle = document.getElementById("talle").value;
+        producto.material = document.getElementById("material")?.value || null;
+    } else if (tipo === "ZAPATILLA") {
+        producto.marca = document.getElementById("marca").value;
+        producto.numeroCalzado = parseInt(document.getElementById("numeroCalzado").value);
+        producto.tipoDeporte = document.getElementById("tipoDeporte")?.value || null;
+    } else if (tipo === "PELOTA") {
+        producto.deporte = document.getElementById("deporte").value;
+        producto.tamanio = document.getElementById("tamanio").value;
     }
-
-    // Creamos un objeto artículo con los datos del formulario
-    const articulo = { nombre, marca, talle, precio };
-    // Determinamos si es una edición (PUT) o creación (POST)
+    
     const url = id ? `${API_URL}/${id}` : API_URL;
     const metodo = id ? "PUT" : "POST";
-
-    // Enviamos el artículo al backend usando fetch
+    
     fetch(url, {
         method: metodo,
-        headers: { "Content-Type": "application/json" }, // Indicamos que el cuerpo es JSON
-        body: JSON.stringify(articulo) // Convertimos el objeto a JSON
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(producto)
     })
     .then(async response => {
         if (!response.ok) {
-            const msg = await response.text();
-            throw new Error(msg || "Error al guardar");
+            const errorData = await response.json().catch(() => ({}));
+            const errorMsg = errorData.error || "Error al guardar el producto";
+            throw new Error(errorMsg);
         }
-        // Algunos endpoints pueden no devolver cuerpo
-        try { return await response.json(); } catch { return null; }
+        return response.json();
     })
     .then(() => {
-        // Limpiamos el formulario y recargamos la tabla
-        document.getElementById("form-articulo").reset();
-        document.getElementById("idArticulo").value = "";
+        alert(id ? "Producto actualizado" : "Producto creado");
+        limpiarFormulario();
     })
     .catch(error => {
-        console.error("Error al guardar artículo:", error);
-        alert("No se pudo guardar el artículo: " + error.message);
+        console.error("Error:", error);
+        alert("No se pudo guardar el producto: " + error.message);
     })
     .finally(() => {
-        // Asegurar que la tabla se refresque siempre
-        listarArticulos();
+        listarProductos();
     });
 }
 
-// === Cargar artículo en el formulario para edición ===
-function editarArticulo(id) {
-    // Llamada GET para obtener los datos del artículo por su ID
+// Editar producto
+function editarProducto(id) {
     fetch(`${API_URL}/${id}`)
-        .then(response => response.json()) // Convertimos la respuesta a JSON
-        .then(articulo => {
-            // Cargamos los datos del artículo en el formulario
-            document.getElementById("idArticulo").value = articulo.id;
-            document.getElementById("nombre").value = articulo.nombre;
-            document.getElementById("marca").value = articulo.marca;
-            document.getElementById("talle").value = articulo.talle;
-            document.getElementById("precio").value = articulo.precio;
+        .then(response => response.json())
+        .then(producto => {
+            document.getElementById("idProducto").value = producto.id;
+            document.getElementById("nombre").value = producto.nombre;
+            document.getElementById("precio").value = producto.precio;
+            document.getElementById("tipo").value = producto.tipo.toUpperCase();
+            
+            mostrarCamposEspecificos();
+            
+            // Cargar campos específicos
+            setTimeout(() => {
+                if (producto.tipo === "Remera") {
+                    if (document.getElementById("marca")) 
+                        document.getElementById("marca").value = producto.marca || "";
+                    if (document.getElementById("talle")) 
+                        document.getElementById("talle").value = producto.talle || "";
+                    if (document.getElementById("material")) 
+                        document.getElementById("material").value = producto.material || "";
+                } else if (producto.tipo === "Zapatilla") {
+                    if (document.getElementById("marca")) 
+                        document.getElementById("marca").value = producto.marca || "";
+                    if (document.getElementById("numeroCalzado")) 
+                        document.getElementById("numeroCalzado").value = producto.numeroCalzado || "";
+                    if (document.getElementById("tipoDeporte")) 
+                        document.getElementById("tipoDeporte").value = producto.tipoDeporte || "";
+                } else if (producto.tipo === "Pelota") {
+                    if (document.getElementById("deporte")) 
+                        document.getElementById("deporte").value = producto.deporte || "";
+                    if (document.getElementById("tamanio")) 
+                        document.getElementById("tamanio").value = producto.tamanio || "";
+                }
+            }, 100);
         })
-        .catch(error => console.error("Error al obtener artículo:", error)); // Manejo de errores
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error al cargar el producto");
+        });
 }
 
-// === Eliminar un artículo ===
-function eliminarArticulo(id) {
-    // Confirmación antes de eliminar
-    if (confirm("¿Deseás eliminar este artículo?")) {
-        // Llamada DELETE al backend
-        fetch(`${API_URL}/${id}`, {
-            method: "DELETE"
-        })
+// Eliminar producto
+function eliminarProducto(id) {
+    if (!confirm("¿Está seguro de eliminar este producto?")) return;
+    
+    fetch(`${API_URL}/${id}`, { method: "DELETE" })
         .then(response => {
-            if (!response.ok) throw new Error("Error al eliminar"); // Verificamos que la respuesta sea exitosa
-            listarArticulos(); // Actualizamos la lista de artículos
+            if (!response.ok) throw new Error("Error al eliminar");
+            alert("Producto eliminado");
+            listarProductos();
         })
-        .catch(error => console.error("Error al eliminar artículo:", error)); // Manejo de errores
-    }
+        .catch(error => {
+            console.error("Error:", error);
+            alert("No se pudo eliminar el producto");
+        });
+}
+
+// Limpiar formulario
+function limpiarFormulario() {
+    document.getElementById("form-producto").reset();
+    document.getElementById("idProducto").value = "";
+    document.getElementById("campos-especificos").innerHTML = "";
 }

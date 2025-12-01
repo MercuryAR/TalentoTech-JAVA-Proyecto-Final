@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API</title>
+</head>
+<body>
+    <h1>Test de Conexión al Backend</h1>
+    <button onclick="testAPI()">Probar Conexión</button>
+    <div id="resultado"></div>
+    
+    <script>
+        function testAPI() {
+            console.log("Probando conexión a http://localhost:8080/api/productos");
+            fetch("http://localhost:8080/api/productos")
+                .then(response => {
+                    console.log("Status:", response.status);
+                    console.log("Headers:", response.headers);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Datos recibidos:", data);
+                    document.getElementById("resultado").innerHTML = 
+                        `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                })
+                .catch(error => {
+                    console.error("ERROR:", error);
+                    document.getElementById("resultado").innerHTML = 
+                        `<p style="color: red;">ERROR: ${error.message}</p>`;
+                });
+        }
+        
+        // Ejecutar automáticamente al cargar
+        window.addEventListener('DOMContentLoaded', testAPI);
+    </script>
+</body>
+</html>

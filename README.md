@@ -1,4 +1,4 @@
-# Proyecto Final - API REST de Artículos
+# Proyecto Final - API REST de Productos Deportivos (Herencia y Polimorfismo)
 
 **Autor:** Paulo Orsini  
 **Curso:** BACK END JAVA  
@@ -6,13 +6,16 @@
 
 ## Descripción del Proyecto
 
-Este proyecto es una aplicación full-stack que implementa un sistema CRUD (Crear, Leer, Actualizar, Eliminar) completo para la gestión de artículos. Está compuesto por un backend desarrollado con Spring Boot y un frontend con HTML, CSS y JavaScript vanilla.
+Este proyecto es una aplicación full-stack que implementa un sistema CRUD (Crear, Leer, Actualizar, Eliminar) para la gestión de **productos deportivos** usando conceptos de **herencia** y **polimorfismo** en Java. Incluye:
+- Backend con Spring Boot y MySQL
+- Frontend con HTML, CSS y JavaScript vanilla
+- Arquitectura orientada a objetos con jerarquía de productos
 
 ## Estructura del Proyecto
 
 ### 📁 Backend: `articulo-api-mysql-funcional/`
 
-API REST desarrollada con **Spring Boot 3.2.5** y **Java 17** que proporciona endpoints para la gestión de artículos.
+API REST desarrollada con **Spring Boot 3.2.5** y **Java 17/21** que gestiona productos deportivos polimórficos.
 
 #### Tecnologías Utilizadas:
 - **Spring Boot** - Framework principal
@@ -20,38 +23,44 @@ API REST desarrollada con **Spring Boot 3.2.5** y **Java 17** que proporciona en
 - **MySQL** - Base de datos relacional
 - **Maven** - Gestor de dependencias
 
-#### Arquitectura:
-El backend sigue una arquitectura en capas:
+#### Arquitectura y Polimorfismo:
+El backend implementa una jerarquía de productos usando herencia:
 
-- **Controller** (`ArticuloController.java`): Expone los endpoints REST en `/api/articulos`
-  - `GET /api/articulos` - Listar todos los artículos
-  - `GET /api/articulos/{id}` - Obtener un artículo por ID
-  - `POST /api/articulos` - Crear un nuevo artículo
-  - `PUT /api/articulos/{id}` - Actualizar un artículo existente
-  - `DELETE /api/articulos/{id}` - Eliminar un artículo
+- **Producto** (`Producto.java`): Clase abstracta base
+- **Remera** (`Remera.java`): Subclase (10% descuento)
+- **Zapatilla** (`Zapatilla.java`): Subclase (15% descuento)
+- **Pelota** (`Pelota.java`): Subclase (sin descuento)
 
-- **Service** (`ArticuloService.java`, `ArticuloServiceImpl.java`): Lógica de negocio
+Cada tipo tiene atributos y lógica de precio final propios. El controlador (`ProductoController.java`) expone los endpoints REST en `/api/productos`:
+- `GET /api/productos` - Listar todos los productos
+- `GET /api/productos/{id}` - Obtener un producto por ID
+- `POST /api/productos` - Crear un nuevo producto (enviar campo `tipo`)
+- `PUT /api/productos/{id}` - Actualizar un producto
+- `DELETE /api/productos/{id}` - Eliminar un producto
 
-- **Repository** (`ArticuloRepository.java`): Capa de acceso a datos con Spring Data JPA
-
-- **Model** (`Articulo.java`): Entidad JPA que representa un artículo con los siguientes atributos:
-  - `id` (Long) - Identificador único
-  - `nombre` (String) - Nombre del artículo
-  - `marca` (String) - Marca del artículo
-  - `talle` (Integer) - Talle del artículo
-  - `precio` (Double) - Precio del artículo
+**Ejemplo de JSON para crear una Remera:**
+```json
+{
+  "tipo": "REMERA",
+  "nombre": "Remera Nike Dri-Fit",
+  "precio": 15000,
+  "marca": "Nike",
+  "talle": 42,
+  "material": "Poliéster"
+}
+```
 
 #### Configuración:
 El archivo `application.properties` contiene la configuración de conexión a MySQL:
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/articulos_db
+spring.datasource.url=jdbc:mysql://localhost:3306/shop?allowPublicKeyRetrieval=true&useSSL=false
 spring.datasource.username=root
-spring.datasource.password=
+spring.datasource.password=Dantesol.0407
 ```
 
 ### 📁 Frontend: `crud_articulos_frontend/`
 
-Interfaz de usuario desarrollada con tecnologías web estándar que consume la API REST.
+Interfaz de usuario web que consume la API REST y permite gestionar productos deportivos polimórficos.
 
 #### Tecnologías:
 - **HTML5** (`index.html`) - Estructura de la página
@@ -59,16 +68,16 @@ Interfaz de usuario desarrollada con tecnologías web estándar que consume la A
 - **JavaScript** (`js/app.js`) - Lógica del cliente y comunicación con la API
 
 #### Funcionalidades:
-- Visualización de artículos en una tabla dinámica
-- Formulario para crear nuevos artículos
-- Edición de artículos existentes
-- Eliminación de artículos
+- Visualización de productos en una tabla dinámica
+- Formulario polimórfico: los campos cambian según el tipo de producto
+- Edición y eliminación de productos
+- Cálculo automático de precio final según el tipo
 - Comunicación asíncrona con la API mediante Fetch API
 
 ### 📁 Base de Datos
 
-- **`articulos_db.sql`**: Script SQL para crear la base de datos y la tabla de artículos
-
+- **`articulos_db.sql`**: Script SQL original (ver `database_herencia.sql` para la versión polimórfica)
+- **`database_herencia.sql`**: Script SQL para la estructura polimórfica y migración de datos
 - **`API_Articulos_MySQL_Coleccion.postman_collection.json`**: Colección de Postman con ejemplos de peticiones para probar la API
 
 ## Requisitos Previos
@@ -83,7 +92,7 @@ Interfaz de usuario desarrollada con tecnologías web estándar que consume la A
 ### 1. Base de Datos
 ```bash
 # Importar el script SQL en MySQL
-mysql -u root -p < articulos_db.sql
+mysql -u root -p < database_herencia.sql
 ```
 
 ### 2. Backend
@@ -102,29 +111,31 @@ El servidor se iniciará en `http://localhost:8080`
 # Navegar al directorio del frontend
 cd crud_articulos_frontend
 
-# Abrir index.html en un navegador
-# O usar un servidor HTTP local como Live Server
+# Iniciar un servidor HTTP local
+python3 -m http.server 5500
 ```
+
+Luego abre `http://localhost:5500` en tu navegador.
 
 ## Características Principales
 
-✅ API RESTful completamente funcional  
+✅ API RESTful polimórfica (herencia y discriminador de tipo)  
 ✅ Operaciones CRUD completas  
-✅ Validación de datos  
+✅ Validación de datos y manejo de errores  
 ✅ Soporte CORS para comunicación frontend-backend  
 ✅ Interfaz de usuario intuitiva y responsiva  
-✅ Manejo de errores en el frontend  
+✅ Formulario dinámico según el tipo de producto  
 ✅ Actualización dinámica sin recargar la página
 
 ## Endpoints de la API
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | `/api/articulos` | Obtener todos los artículos |
-| GET | `/api/articulos/{id}` | Obtener un artículo específico |
-| POST | `/api/articulos` | Crear un nuevo artículo |
-| PUT | `/api/articulos/{id}` | Actualizar un artículo existente |
-| DELETE | `/api/articulos/{id}` | Eliminar un artículo |
+|--------|---------------------|-------------------------------|
+| GET    | `/api/productos`    | Obtener todos los productos    |
+| GET    | `/api/productos/{id}` | Obtener un producto específico |
+| POST   | `/api/productos`    | Crear un nuevo producto        |
+| PUT    | `/api/productos/{id}` | Actualizar un producto         |
+| DELETE | `/api/productos/{id}` | Eliminar un producto           |
 
 ## Pruebas
 
