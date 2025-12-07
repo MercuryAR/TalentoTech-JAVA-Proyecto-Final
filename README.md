@@ -4,7 +4,7 @@
 **Curso:** BACK END JAVA  
 **Comisión:** C25254
 
-## 🎯 Descripción del Proyecto
+## Descripción del Proyecto
 
 Este proyecto es una aplicación **full-stack** que implementa un sistema CRUD completo para la gestión de **productos deportivos** usando:
 
@@ -16,7 +16,7 @@ Este proyecto es una aplicación **full-stack** que implementa un sistema CRUD c
 - ✅ **Logging** estructurado con SLF4J
 - ✅ **Arquitectura RESTful** profesional en capas
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 proyecto_final_paulo_orsini/
@@ -59,7 +59,7 @@ proyecto_final_paulo_orsini/
 └── README.md                              # Este archivo
 ```
 
-## 🏗️ Arquitectura del Backend
+## Arquitectura del Backend
 
 ### Herencia y Polimorfismo
 
@@ -166,7 +166,7 @@ Ejemplo de logs en consola:
 2025-12-05 22:45:33.012 ERROR --- [GlobalExceptionHandler] : Error interno del servidor
 ```
 
-## 🚀 Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ### Backend
 - **Java 17/21** - Lenguaje de programación
@@ -185,16 +185,16 @@ Ejemplo de logs en consola:
 - **CSS3** - Bootstrap 5 + estilos personalizados
 - **JavaScript ES6+** - Fetch API, async/await
 
-## 📋 Requisitos Previos
+## Requisitos Previos
 
 - ✅ Java 17 o superior
 - ✅ MySQL 8.0 o superior
 - ✅ Maven 3.6 o superior
 - ✅ Navegador web moderno (Chrome, Firefox, Edge)
 
-## ⚙️ Instalación y Ejecución
+## Instalación y Ejecución
 
-### 1️⃣ Base de Datos
+### Base de Datos
 
 ```bash
 # Conectar a MySQL
@@ -211,7 +211,7 @@ user=root
 password=Dantesol.0407
 ```
 
-### 2️⃣ Backend
+### Backend
 
 ```bash
 cd articulo-api-mysql-funcional
@@ -228,7 +228,7 @@ mvn spring-boot:run
 
 Backend disponible en: `http://localhost:8080`
 
-### 3️⃣ Frontend
+### Frontend
 
 ```bash
 cd crud_articulos_frontend
@@ -242,7 +242,7 @@ npx http-server -p 5500
 
 Abre en el navegador: `http://localhost:5500`
 
-## 📖 Documentación de la API
+## Documentación de la API
 
 ### Swagger UI (Interfaz Interactiva)
 
@@ -264,7 +264,7 @@ http://localhost:8080/swagger-ui.html
 http://localhost:8080/api-docs
 ```
 
-## 🔌 Endpoints de la API
+## Endpoints de la API
 
 | Método | Endpoint | Descripción | Código |
 |--------|----------|-------------|--------|
@@ -317,7 +317,7 @@ curl -X POST http://localhost:8080/api/productos \
   }'
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Ejecutar todos los tests
 
@@ -342,7 +342,7 @@ mvn test
   - `testHandleInternalServerError()` - Manejo de 500
   - `testHandleMethodArgumentNotValid()` - Validación Bean
 
-## 📊 Características Principales
+## Características Principales
 
 ### Backend ✅
 - API RESTful con arquitectura en capas (Controller → Service → Repository)
@@ -364,7 +364,7 @@ mvn test
 - Visualización de precios con descuentos aplicados
 - Interfaz intuitiva y fácil de usar
 
-## 🎨 Interfaz de Usuario
+## Interfaz de Usuario
 
 ### Funcionalidades Principales
 1. **Tabla de Productos** - Muestra todos los productos con precio final
@@ -377,7 +377,7 @@ mvn test
 - **Zapatilla:** marca, numeroCalzado, tipoDeporte
 - **Pelota:** deporte, tamanio
 
-## 🔐 Seguridad y Validaciones
+## Seguridad y Validaciones
 
 ### Validación en Capas
 1. **Frontend** - Validaciones JavaScript antes de enviar
@@ -391,7 +391,7 @@ mvn test
 - Validación de campos obligatorios
 - Manejo de transacciones de base de datos
 
-## 📝 Estructura de Respuestas
+## Estructura de Respuestas
 
 ### Respuesta Exitosa (200)
 ```json
@@ -418,7 +418,7 @@ mvn test
 }
 ```
 
-## 📚 Recursos Adicionales
+## Recursos Adicionales
 
 - [Documentación de Spring Boot](https://spring.io/projects/spring-boot)
 - [SpringDoc OpenAPI](https://springdoc.org/)
@@ -427,7 +427,7 @@ mvn test
 - [Mockito](https://site.mockito.org/)
 - [MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/)
 
-## 🤝 Autor
+## Autor
 
 **Paulo Orsini**  
 Curso: BACK END JAVA - C25254  
@@ -435,4 +435,4 @@ Plataforma: TalentoTech
 
 ---
 
-*Proyecto desarrollado con ❤️ como trabajo final del curso de Back End Java - TalentoTech*
+*Proyecto desarrollado como trabajo final del curso de Back End Java - TalentoTech*
