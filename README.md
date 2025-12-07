@@ -8,13 +8,13 @@
 
 Este proyecto es una aplicación **full-stack** que implementa un sistema CRUD completo para la gestión de **productos deportivos** usando:
 
-- ✅ **Herencia y Polimorfismo** en Java
-- ✅ **Manejo robusto de excepciones** con `@RestControllerAdvice`
-- ✅ **Validaciones** en backend (Bean Validation) y frontend (JavaScript)
-- ✅ **Documentación automática** con Swagger/OpenAPI
-- ✅ **Tests unitarios** con JUnit 5 y Mockito
-- ✅ **Logging** estructurado con SLF4J
-- ✅ **Arquitectura RESTful** profesional en capas
+- **Herencia y Polimorfismo** en Java
+- **Manejo robusto de excepciones** con `@RestControllerAdvice`
+- **Validaciones** en backend (Bean Validation) y frontend (JavaScript)
+- **Documentación automática** con Swagger/OpenAPI
+- **Tests unitarios** con JUnit 5 y Mockito
+- **Logging** estructurado con SLF4J
+- **Arquitectura RESTful** profesional en capas
 
 ## Estructura del Proyecto
 
@@ -187,10 +187,10 @@ Ejemplo de logs en consola:
 
 ## Requisitos Previos
 
-- ✅ Java 17 o superior
-- ✅ MySQL 8.0 o superior
-- ✅ Maven 3.6 o superior
-- ✅ Navegador web moderno (Chrome, Firefox, Edge)
+- Java 17 o superior
+- MySQL 8.0 o superior
+- Maven 3.6 o superior
+- Navegador web moderno (Chrome, Firefox, Edge)
 
 ## Instalación y Ejecución
 
@@ -253,10 +253,10 @@ http://localhost:8080/swagger-ui.html
 ```
 
 **Funcionalidades:**
-- ✅ Ver todos los endpoints disponibles
-- ✅ Probar las peticiones directamente en el navegador
-- ✅ Ver esquemas de datos (request/response)
-- ✅ Descargar especificación OpenAPI (JSON)
+- Ver todos los endpoints disponibles
+- Probar las peticiones directamente en el navegador
+- Ver esquemas de datos (request/response)
+- Descargar especificación OpenAPI (JSON)
 
 ### OpenAPI JSON
 
@@ -328,14 +328,14 @@ mvn test
 
 ### Cobertura de Tests
 
-- ✅ **ProductoControllerTest.java** (5 tests)
+- **ProductoControllerTest.java** (5 tests)
   - `testListar()` - Verificar listado de productos
   - `testObtenerExistente()` - Obtener producto existente
   - `testObtenerNoExistente()` - Verificar 404
   - `testCalculoPrecioFinal()` - Validar descuentos polimórficos
   - `testGetTipo()` - Verificar discriminador
 
-- ✅ **GlobalExceptionHandlerTest.java** (5 tests)
+- **GlobalExceptionHandlerTest.java** (5 tests)
   - `testHandleProductoNotFound()` - Manejo de 404
   - `testHandleBadRequest()` - Manejo de 400
   - `testHandleConflict()` - Manejo de 409
@@ -344,7 +344,7 @@ mvn test
 
 ## Características Principales
 
-### Backend ✅
+### Backend
 - API RESTful con arquitectura en capas (Controller → Service → Repository)
 - Herencia polimórfica con Single Table Inheritance
 - Manejo centralizado de excepciones con `@RestControllerAdvice`
@@ -355,7 +355,7 @@ mvn test
 - CORS habilitado para frontend
 - Respuestas JSON estructuradas y consistentes
 
-### Frontend ✅
+### Frontend
 - Interfaz responsive con Bootstrap 5
 - Formulario dinámico según tipo de producto
 - Validaciones en cliente antes de enviar
