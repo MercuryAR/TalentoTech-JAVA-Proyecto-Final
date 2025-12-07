@@ -1,6 +1,7 @@
 
 package com.ejemplo.articulos.controller;
 
+import com.ejemplo.articulos.exception.ProductoNotFoundException;
 import com.ejemplo.articulos.model.*;
 import com.ejemplo.articulos.service.ProductoService;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,9 @@ public class ProductoController {
     
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> obtener(@PathVariable Long id) {
-        return service.buscarPorId(id)
-                .map(producto -> ResponseEntity.ok(productoToMap(producto)))
-                .orElse(ResponseEntity.notFound().build());
+        Producto producto = service.buscarPorId(id)
+                .orElseThrow(() -> new ProductoNotFoundException(id));
+        return ResponseEntity.ok(productoToMap(producto));
     }
     
     @PostMapping
@@ -50,18 +51,17 @@ public class ProductoController {
     
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> actualizar(@PathVariable Long id, @RequestBody Map<String, Object> datos) {
-        return service.buscarPorId(id)
-                .map(existente -> {
-                    try {
-                        Producto producto = mapToProducto(datos);
-                        producto.setId(id);
-                        Producto actualizado = service.guardar(producto);
-                        return ResponseEntity.ok(productoToMap(actualizado));
-                    } catch (IllegalArgumentException e) {
-                        return ResponseEntity.badRequest().<Map<String, Object>>body(Map.of("error", e.getMessage()));
-                    }
-                })
-                .orElse(ResponseEntity.notFound().build());
+        Producto existente = service.buscarPorId(id)
+                .orElseThrow(() -> new ProductoNotFoundException(id));
+        
+        try {
+            Producto producto = mapToProducto(datos);
+            producto.setId(id);
+            Producto actualizado = service.guardar(producto);
+            return ResponseEntity.ok(productoToMap(actualizado));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().<Map<String, Object>>body(Map.of("error", e.getMessage()));
+        }
     }
     
     @DeleteMapping("/{id}")
