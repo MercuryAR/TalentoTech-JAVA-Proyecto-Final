@@ -52,7 +52,7 @@ class ProductoControllerTest {
         // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
-        assertEquals("Remera Test", resultado.get(0).get("nombre"));
+        assertEquals("Remera Test", resultado.getFirst().get("nombre"));
         verify(service, times(1)).listarTodos();
     }
 

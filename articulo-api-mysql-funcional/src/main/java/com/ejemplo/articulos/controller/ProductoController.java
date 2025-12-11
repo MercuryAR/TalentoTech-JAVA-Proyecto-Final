@@ -125,18 +125,15 @@ public class ProductoController {
         map.put("detalle", p.getDetalleEspecifico());
         
         // Agregar campos específicos según el tipo
-        if (p instanceof Remera) {
-            Remera r = (Remera) p;
+        if (p instanceof Remera r) {
             map.put("marca", r.getMarca());
             map.put("talle", r.getTalle());
             map.put("material", r.getMaterial());
-        } else if (p instanceof Zapatilla) {
-            Zapatilla z = (Zapatilla) p;
+        } else if (p instanceof Zapatilla z) {
             map.put("marca", z.getMarca());
             map.put("numeroCalzado", z.getNumeroCalzado());
             map.put("tipoDeporte", z.getTipoDeporte());
-        } else if (p instanceof Pelota) {
-            Pelota pel = (Pelota) p;
+        } else if (p instanceof Pelota pel) {
             map.put("deporte", pel.getDeporte());
             map.put("tamanio", pel.getTamanio());
         }
