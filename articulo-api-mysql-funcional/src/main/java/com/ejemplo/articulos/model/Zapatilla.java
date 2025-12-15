@@ -6,14 +6,15 @@ import jakarta.persistence.*;
 @Entity
 @DiscriminatorValue("ZAPATILLA")
 public class Zapatilla extends Producto {
-    
+
     private String marca;
     private Integer numeroCalzado;
     private String tipoDeporte;
-    
+
     // Constructor vacío
-    public Zapatilla() {}
-    
+    public Zapatilla() {
+    }
+
     // Constructor con parámetros
     public Zapatilla(Long id, String nombre, Double precio, String marca, Integer numeroCalzado, String tipoDeporte) {
         super(id, nombre, precio);
@@ -21,23 +22,23 @@ public class Zapatilla extends Producto {
         this.numeroCalzado = numeroCalzado;
         this.tipoDeporte = tipoDeporte;
     }
-    
+
     @Override
     public String getTipo() {
-        return "Zapatilla";
+        return "ZAPATILLA";
     }
-    
+
     @Override
     public Double calcularPrecioFinal() {
         // 15% de descuento en zapatillas
         return getPrecio() * 0.85;
     }
-    
+
     @Override
     public String getDetalleEspecifico() {
         return marca + " - Nº " + numeroCalzado + (tipoDeporte != null ? " - " + tipoDeporte : "");
     }
-    
+
     // Getters y Setters
     public String getMarca() {
         return marca;

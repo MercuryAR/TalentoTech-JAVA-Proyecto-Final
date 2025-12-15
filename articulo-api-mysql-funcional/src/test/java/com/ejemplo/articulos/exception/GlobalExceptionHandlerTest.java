@@ -8,6 +8,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +27,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testHandleProductoNotFound() {
         // Arrange
         ProductoNotFoundException exception = new ProductoNotFoundException(1L);
@@ -43,6 +45,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testHandleBadRequest() {
         // Arrange
         BadRequestException exception = new BadRequestException("Petición inválida");
@@ -59,6 +62,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testHandleConflict() {
         // Arrange
         ConflictException exception = new ConflictException("Producto duplicado");
@@ -75,6 +79,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testHandleInternalServerError() {
         // Arrange
         InternalServerErrorException exception = new InternalServerErrorException("Error del servidor");
@@ -88,5 +93,49 @@ class GlobalExceptionHandlerTest {
         assertNotNull(body);
         assertEquals(500, body.get("status"));
         assertEquals("Error del servidor", body.get("message"));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testHandleValidationException() {
+        // Arrange
+        Map<String, String> errores = new HashMap<>();
+        errores.put("precio", "Debe ser mayor que 0");
+        errores.put("nombre", "No puede estar vacío");
+        ValidationException exception = new ValidationException("El precio no puede ser negativo", errores);
+
+        // Act
+        ResponseEntity<Object> response = handler.handleValidationException(exception, request);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        Map<String, Object> body = (Map<String, Object>) response.getBody();
+        assertNotNull(body);
+        assertEquals(400, body.get("status"));
+        assertEquals("Validation Error", body.get("error"));
+        assertEquals("El precio no puede ser negativo", body.get("message"));
+        assertTrue(body.containsKey("errors"));
+        Map<String, String> bodyErrors = (Map<String, String>) body.get("errors");
+        assertEquals("Debe ser mayor que 0", bodyErrors.get("precio"));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testHandleGlobalException() {
+        // Arrange
+        Exception exception = new Exception("Error inesperado en el servidor");
+
+        // Act
+        ResponseEntity<Object> response = handler.handleGlobalException(exception, request);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        Map<String, Object> body = (Map<String, Object>) response.getBody();
+        assertNotNull(body);
+        assertEquals(500, body.get("status"));
+        assertEquals("Internal Server Error", body.get("error"));
+        assertTrue(body.get("message").toString().contains("Ocurrió un error inesperado"));
+        assertTrue(body.containsKey("timestamp"));
+        assertTrue(body.containsKey("path"));
     }
 }

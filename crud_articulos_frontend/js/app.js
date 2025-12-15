@@ -90,8 +90,8 @@ function listarProductos() {
             data.forEach(producto => {
                 const descuento = ((producto.precio - producto.precioFinal) / producto.precio * 100).toFixed(0);
                 const tipo = producto.tipo || "Desconocido";
-                const badgeClass = tipo === "Remera" ? "bg-primary" : 
-                                   tipo === "Zapatilla" ? "bg-success" : "bg-warning";
+                const badgeClass = tipo === "REMERA" ? "bg-primary" : 
+                                   tipo === "ZAPATILLA" ? "bg-success" : "bg-warning";
                 
                 const fila = document.createElement("tr");
                 fila.innerHTML = `
@@ -193,21 +193,21 @@ function editarProducto(id) {
             
             // Cargar campos específicos
             setTimeout(() => {
-                if (producto.tipo === "Remera") {
+                if (producto.tipo === "REMERA") {
                     if (document.getElementById("marca")) 
                         document.getElementById("marca").value = producto.marca || "";
                     if (document.getElementById("talle")) 
                         document.getElementById("talle").value = producto.talle || "";
                     if (document.getElementById("material")) 
                         document.getElementById("material").value = producto.material || "";
-                } else if (producto.tipo === "Zapatilla") {
+                } else if (producto.tipo === "ZAPATILLA") {
                     if (document.getElementById("marca")) 
                         document.getElementById("marca").value = producto.marca || "";
                     if (document.getElementById("numeroCalzado")) 
                         document.getElementById("numeroCalzado").value = producto.numeroCalzado || "";
                     if (document.getElementById("tipoDeporte")) 
                         document.getElementById("tipoDeporte").value = producto.tipoDeporte || "";
-                } else if (producto.tipo === "Pelota") {
+                } else if (producto.tipo === "PELOTA") {
                     if (document.getElementById("deporte")) 
                         document.getElementById("deporte").value = producto.deporte || "";
                     if (document.getElementById("tamanio")) 

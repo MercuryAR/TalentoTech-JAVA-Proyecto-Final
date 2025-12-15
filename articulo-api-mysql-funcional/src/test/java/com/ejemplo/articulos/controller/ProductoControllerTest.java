@@ -29,7 +29,7 @@ class ProductoControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        
+
         remeraTest = new Remera();
         remeraTest.setId(1L);
         remeraTest.setNombre("Remera Test");
@@ -65,7 +65,7 @@ class ProductoControllerTest {
 
         // Assert
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(200, response.getStatusCode().value());
         assertEquals("Remera Test", response.getBody().get("nombre"));
         verify(service, times(1)).buscarPorId(1L);
     }
@@ -97,6 +97,6 @@ class ProductoControllerTest {
         String tipo = remeraTest.getTipo();
 
         // Assert
-        assertEquals("Remera", tipo);
+        assertEquals("REMERA", tipo);
     }
 }

@@ -4,19 +4,19 @@
 **Curso:** BACK END JAVA  
 **Comisión:** C25254
 
-## 🎯 Descripción del Proyecto
+## Descripción del Proyecto
 
 Este proyecto es una aplicación **full-stack** que implementa un sistema CRUD completo para la gestión de **productos deportivos** usando:
 
-- ✅ **Herencia y Polimorfismo** en Java
-- ✅ **Manejo robusto de excepciones** con `@RestControllerAdvice`
-- ✅ **Validaciones** en backend (Bean Validation) y frontend (JavaScript)
-- ✅ **Documentación automática** con Swagger/OpenAPI
-- ✅ **Tests unitarios** con JUnit 5 y Mockito
-- ✅ **Logging** estructurado con SLF4J
-- ✅ **Arquitectura RESTful** profesional en capas
+-  **Herencia y Polimorfismo** en Java
+-  **Manejo robusto de excepciones** con `@RestControllerAdvice`
+-  **Validaciones** en backend (Bean Validation) y frontend (JavaScript)
+-  **Documentación automática** con Swagger/OpenAPI
+-  **Tests unitarios** con JUnit 5 y Mockito
+-  **Logging** estructurado con SLF4J
+-  **Arquitectura RESTful** profesional en capas
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 proyecto_final_paulo_orsini/
@@ -59,7 +59,7 @@ proyecto_final_paulo_orsini/
 └── README.md                              # Este archivo
 ```
 
-## 🏗️ Arquitectura del Backend
+## Arquitectura del Backend
 
 ### Herencia y Polimorfismo
 
@@ -77,15 +77,21 @@ Cada subclase implementa métodos polimórficos:
 
 **Estrategia de Herencia:** Single Table Inheritance (STI) con discriminator `type_producto`
 
-### Manejo Centralizado de Excepciones
+### Manejo Centralizado de Excepciones  VALIDADO
 
-| Excepción | Código HTTP | Descripción |
-|-----------|-------------|-------------|
-| `ProductoNotFoundException` | 404 | Producto no encontrado |
-| `ValidationException` | 400 | Errores de validación con detalle |
-| `BadRequestException` | 400 | Petición mal formada |
-| `ConflictException` | 409 | Conflictos (duplicados, cambio de tipo) |
-| `InternalServerErrorException` | 500 | Errores del servidor |
+**Estado:**  7/7 excepciones validadas con tests (Diciembre 2025)
+
+| Excepción | Código HTTP | Descripción | Tests |
+|-----------|-------------|-------------|-------|
+| `ProductoNotFoundException` | 404 | Producto no encontrado |  2 tests |
+| `ValidationException` | 400 | Errores de validación con detalle |  1 test |
+| `BadRequestException` | 400 | Petición mal formada |  3 tests |
+| `ConflictException` | 409 | Conflictos (duplicados, cambio de tipo) |  1 test |
+| `InternalServerErrorException` | 500 | Errores del servidor |  1 test |
+| `MethodArgumentNotValidException` | 400 | Validación Bean |  Spring |
+| Generic `Exception` | 500 | Fallback global |  1 test |
+
+ **Documentación completa:** [`EXCEPTION_HANDLING_DOCUMENTATION.md`](EXCEPTION_HANDLING_DOCUMENTATION.md)
 
 **Ejemplo de respuesta de error (404):**
 ```json
@@ -166,35 +172,36 @@ Ejemplo de logs en consola:
 2025-12-05 22:45:33.012 ERROR --- [GlobalExceptionHandler] : Error interno del servidor
 ```
 
-## 🚀 Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ### Backend
-- **Java 17/21** - Lenguaje de programación
-- **Spring Boot 3.2.5** - Framework web
+- **Java 21** - Lenguaje de programación
+- **Spring Boot 3.5.0**  ACTUALIZADO (Diciembre 2025)
+- **Spring Framework 6.2.7**  ACTUALIZADO
   - spring-boot-starter-web (REST API)
   - spring-boot-starter-data-jpa (ORM)
   - spring-boot-starter-validation (Bean Validation)
-- **MySQL 8.0** - Base de datos relacional
-- **Maven** - Gestor de dependencias
-- **SpringDoc OpenAPI 2.3.0** - Swagger UI
+- **MySQL 9.2.0** - Base de datos relacional  ACTUALIZADO
+- **Maven 3.9+** - Gestor de dependencias
+- **SpringDoc OpenAPI 2.0.4** - Swagger UI
 - **SLF4J + Logback** - Logging
-- **JUnit 5 + Mockito** - Testing
+- **JUnit 5.12.2 + Mockito 5.17.0** - Testing  ACTUALIZADO
 
 ### Frontend
 - **HTML5** - Estructura semántica
 - **CSS3** - Bootstrap 5 + estilos personalizados
 - **JavaScript ES6+** - Fetch API, async/await
 
-## 📋 Requisitos Previos
+## Requisitos Previos
 
-- ✅ Java 17 o superior
-- ✅ MySQL 8.0 o superior
-- ✅ Maven 3.6 o superior
-- ✅ Navegador web moderno (Chrome, Firefox, Edge)
+-  Java 17 o superior
+-  MySQL 8.0 o superior
+-  Maven 3.6 o superior
+-  Navegador web moderno (Chrome, Firefox, Edge)
 
-## ⚙️ Instalación y Ejecución
+## Instalación y Ejecución
 
-### 1️⃣ Base de Datos
+### 1⃣ Base de Datos
 
 ```bash
 # Conectar a MySQL
@@ -211,7 +218,7 @@ user=root
 password=Dantesol.0407
 ```
 
-### 2️⃣ Backend
+### 2⃣ Backend
 
 ```bash
 cd articulo-api-mysql-funcional
@@ -228,7 +235,7 @@ mvn spring-boot:run
 
 Backend disponible en: `http://localhost:8080`
 
-### 3️⃣ Frontend
+### 3⃣ Frontend
 
 ```bash
 cd crud_articulos_frontend
@@ -242,7 +249,7 @@ npx http-server -p 5500
 
 Abre en el navegador: `http://localhost:5500`
 
-## 📖 Documentación de la API
+## Documentación de la API
 
 ### Swagger UI (Interfaz Interactiva)
 
@@ -253,10 +260,10 @@ http://localhost:8080/swagger-ui.html
 ```
 
 **Funcionalidades:**
-- ✅ Ver todos los endpoints disponibles
-- ✅ Probar las peticiones directamente en el navegador
-- ✅ Ver esquemas de datos (request/response)
-- ✅ Descargar especificación OpenAPI (JSON)
+-  Ver todos los endpoints disponibles
+-  Probar las peticiones directamente en el navegador
+-  Ver esquemas de datos (request/response)
+-  Descargar especificación OpenAPI (JSON)
 
 ### OpenAPI JSON
 
@@ -264,7 +271,7 @@ http://localhost:8080/swagger-ui.html
 http://localhost:8080/api-docs
 ```
 
-## 🔌 Endpoints de la API
+## Endpoints de la API
 
 | Método | Endpoint | Descripción | Código |
 |--------|----------|-------------|--------|
@@ -317,7 +324,7 @@ curl -X POST http://localhost:8080/api/productos \
   }'
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Ejecutar todos los tests
 
@@ -326,25 +333,40 @@ cd articulo-api-mysql-funcional
 mvn test
 ```
 
-### Cobertura de Tests
+**Resultado esperado:**
+```
+Tests run: 17, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS 
+```
 
-- ✅ **ProductoControllerTest.java** (5 tests)
-  - `testListar()` - Verificar listado de productos
-  - `testObtenerExistente()` - Obtener producto existente
-  - `testObtenerNoExistente()` - Verificar 404
-  - `testCalculoPrecioFinal()` - Validar descuentos polimórficos
-  - `testGetTipo()` - Verificar discriminador
+### Cobertura Completa de Tests (17 tests)
 
-- ✅ **GlobalExceptionHandlerTest.java** (5 tests)
-  - `testHandleProductoNotFound()` - Manejo de 404
-  - `testHandleBadRequest()` - Manejo de 400
-  - `testHandleConflict()` - Manejo de 409
-  - `testHandleInternalServerError()` - Manejo de 500
-  - `testHandleMethodArgumentNotValid()` - Validación Bean
+#### **GlobalExceptionHandlerTest.java** (6 tests)  ACTUALIZADO
+-  `testHandleProductoNotFound()` - Valida 404 Not Found
+-  `testHandleBadRequest()` - Valida 400 Bad Request  
+-  `testHandleConflict()` - Valida 409 Conflict
+-  `testHandleInternalServerError()` - Valida 500 Internal Server Error
+-  `testHandleValidationException()` - Valida errores de validación  NUEVO
+-  `testHandleGlobalException()` - Valida fallback global  NUEVO
 
-## 📊 Características Principales
+#### **ProductoControllerExceptionTest.java** (6 tests)  NUEVO
+-  `testObtenerProductoNoEncontrado()` - GET producto inexistente → 404
+-  `testCrearProductoSinTipo()` - POST sin tipo → 400
+-  `testCrearProductoTipoInvalido()` - POST tipo inválido → 400
+-  `testActualizarProductoNoEncontrado()` - PUT inexistente → 404
+-  `testCrearProductoRemeraValido()` - POST válido → 200 OK
+-  `testRespuestaExcepcionTieneTimestampYPath()` - Valida estructura JSON
 
-### Backend ✅
+#### **ProductoControllerTest.java** (5 tests)
+-  `testListarProductos()` - GET /api/productos → 200
+-  `testCrearRemera()` - POST remera válida → 200
+-  `testCrearZapatilla()` - POST zapatilla válida → 200
+-  `testCrearPelota()` - POST pelota válida → 200
+-  `testActualizarProducto()` - PUT producto → 200
+
+## Características Principales
+
+### Backend 
 - API RESTful con arquitectura en capas (Controller → Service → Repository)
 - Herencia polimórfica con Single Table Inheritance
 - Manejo centralizado de excepciones con `@RestControllerAdvice`
@@ -355,7 +377,7 @@ mvn test
 - CORS habilitado para frontend
 - Respuestas JSON estructuradas y consistentes
 
-### Frontend ✅
+### Frontend 
 - Interfaz responsive con Bootstrap 5
 - Formulario dinámico según tipo de producto
 - Validaciones en cliente antes de enviar
@@ -364,7 +386,7 @@ mvn test
 - Visualización de precios con descuentos aplicados
 - Interfaz intuitiva y fácil de usar
 
-## 🎨 Interfaz de Usuario
+## Interfaz de Usuario
 
 ### Funcionalidades Principales
 1. **Tabla de Productos** - Muestra todos los productos con precio final
@@ -377,7 +399,7 @@ mvn test
 - **Zapatilla:** marca, numeroCalzado, tipoDeporte
 - **Pelota:** deporte, tamanio
 
-## 🔐 Seguridad y Validaciones
+## Seguridad y Validaciones
 
 ### Validación en Capas
 1. **Frontend** - Validaciones JavaScript antes de enviar
@@ -391,7 +413,7 @@ mvn test
 - Validación de campos obligatorios
 - Manejo de transacciones de base de datos
 
-## 📝 Estructura de Respuestas
+## Estructura de Respuestas
 
 ### Respuesta Exitosa (200)
 ```json
@@ -418,16 +440,49 @@ mvn test
 }
 ```
 
-## 📚 Recursos Adicionales
+## Mejoras y Actualizaciones Recientes
 
-- [Documentación de Spring Boot](https://spring.io/projects/spring-boot)
+### Upgrade Spring Framework (Diciembre 2025)
+
+**Proceso completado exitosamente:**
+-  Actualizado de Spring Boot 3.2.5 → **3.5.0**
+-  Spring Framework 6.1.x → **6.2.7**
+-  MySQL Connector 8.3.0 → **9.2.0**
+-  Jackson 2.15.4 → **2.19.0**
+-  JUnit Jupiter 5.10.2 → **5.12.2**
+-  Mockito 5.7.0 → **5.17.0**
+-  **0 CVE vulnerabilities** detectadas
+-  Build exitoso con **17 tests pasando**
+
+**Detalles técnicos:** Ver `.github/java-upgrade/20251211165206/summary.md`
+
+### Validación Completa de Excepciones (Opción D)
+
+**Completado con éxito:**
+1.  **Reporte de cobertura** - 7/7 excepciones validadas
+2.  **Tests agregados** - 8 nuevos tests de excepciones
+3.  **Documentación completa** - `EXCEPTION_HANDLING_DOCUMENTATION.md`
+4.  **Validación en controladores** - Todos los endpoints verificados
+
+**Resultados:**
+- Total de tests: **17** (6 handler + 6 controller exceptions + 5 controller)
+- Tests pasando: **17/17** 
+- Fallos: **0** 
+- Errores: **0** 
+
+---
+
+## Recursos Adicionales
+
+- [Documentación de Spring Boot 3.5](https://spring.io/projects/spring-boot)
+- [Spring Framework 6.2](https://docs.spring.io/spring-framework/reference/)
 - [SpringDoc OpenAPI](https://springdoc.org/)
 - [Bean Validation](https://beanvalidation.org/)
 - [JUnit 5](https://junit.org/junit5/)
 - [Mockito](https://site.mockito.org/)
-- [MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/)
+- [MySQL Connector/J 9.x](https://dev.mysql.com/downloads/connector/j/)
 
-## 🤝 Autor
+## Autor
 
 **Paulo Orsini**  
 Curso: BACK END JAVA - C25254  
@@ -435,4 +490,4 @@ Plataforma: TalentoTech
 
 ---
 
-*Proyecto desarrollado con ❤️ como trabajo final del curso de Back End Java - TalentoTech*
+*Proyecto desarrollado con  como trabajo final del curso de Back End Java - TalentoTech*
